@@ -16,12 +16,22 @@ pipeline {
         stage('Deploy to Server') {
             steps {
                 script {
-                    // Pastikan Anda memiliki izin untuk menulis ke /var/www/html
                     echo 'Memulai deployment...'
-                    sh '''
-                    mkdir -p /var/www/html/website-statis
-                    cp -r * /var/www/html/website-statis
-                    '''
+                    if (isUnix()) {
+                        sh '''
+                        # Membuat direktori tujuan jika belum ada
+                        sudo mkdir -p /var/www/html/website-statis
+                        # Menyalin seluruh file ke direktori tujuan
+                        sudo cp -r * /var/www/html/website-statis/
+                        '''
+                    } else {
+                        bat '''
+                        REM Membuat direktori tujuan jika belum ada
+                        if not exist "C:\\var\\www\\html\\website-statis" mkdir "C:\\var\\www\\html\\website-statis"
+                        REM Menyalin seluruh file ke direktori tujuan
+                        xcopy * "C:\\var\\www\\html\\website-statis\\" /E /I /Y
+                        '''
+                    }
                     echo 'Deployment berhasil!'
                 }
             }
