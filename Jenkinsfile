@@ -19,8 +19,10 @@ pipeline {
                     // Pastikan Anda memiliki izin untuk menulis ke /var/www/html
                     echo 'Memulai deployment...'
                     sh '''
-                    mkdir -p /var/www/html/website-statis
-                    cp -r * /var/www/html/website-statis
+                    # Membuat direktori tujuan jika belum ada
+                    sudo mkdir -p /var/www/html/website-statis
+                    # Menyalin seluruh file ke direktori tujuan
+                    sudo cp -r * /var/www/html/website-statis/
                     '''
                     echo 'Deployment berhasil!'
                 }
