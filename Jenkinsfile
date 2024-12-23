@@ -3,8 +3,8 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                // Clone kode dari repository GitHub
-                git 'https://github.com/fznhakiim/website-statis.git'
+                // Clone kode dari repository GitHub dengan branch main
+                git branch: 'main', url: 'https://github.com/fznhakiim/website-statis.git'
             }
         }
         stage('Build & Test') {
@@ -15,12 +15,15 @@ pipeline {
         }
         stage('Deploy to Server') {
             steps {
-                // Deployment ke server staging (contoh: direktori lokal web server)
-                sh '''
-                mkdir -p /var/www/html/website-statis
-                cp -r * /var/www/html/website-statis
-                '''
-                echo 'Deployment berhasil!'
+                script {
+                    // Pastikan Anda memiliki izin untuk menulis ke /var/www/html
+                    echo 'Memulai deployment...'
+                    sh '''
+                    mkdir -p /var/www/html/website-statis
+                    cp -r * /var/www/html/website-statis
+                    '''
+                    echo 'Deployment berhasil!'
+                }
             }
         }
     }
